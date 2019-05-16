@@ -56,13 +56,12 @@ export function subtract(n1: number, n2: number): number {
   }
 }
 
-export function multiply(n1: string, n2: string) {
+export function multiply(n1: number, n2: number) {
   let product: string[] = [];
   const _var1 = Array(n1).fill('-');
   _var1.forEach(_ => {
     product = product.concat(Array(n2));
   })
-
   return product.length
 }
 
