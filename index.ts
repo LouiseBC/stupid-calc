@@ -1,3 +1,4 @@
+// todo fix fraction
 export function add(n1: number, n2: number): number {
   if (isNegative(n1)) {
     if (isNegative(n2)) {
@@ -58,8 +59,8 @@ export function subtract(n1: number, n2: number): number {
 
 export function multiply(n1: number, n2: number) {
   let product: string[] = [];
-  const _var1 = Array(Math.abs(n1)).fill('-');
-  _var1.forEach(_ => {
+  const multiplicand = Array(Math.abs(n1)).fill('-');
+  multiplicand.forEach(_ => {
     product = product.concat(Array(Math.abs(n2)));
   });
   if (isNegative(n1)) {
@@ -75,20 +76,62 @@ export function multiply(n1: number, n2: number) {
   }
 }
 
-export function divide(n1: number, n2: number) {
-  let notRemainder: any[] = [];
-  let target = Array(n1);
-  while (target.length) {
-    const divisorIsNotZero = Array(n2).length;
-    if (divisorIsNotZero) {
-      target.splice(0, n2);
-      notRemainder = notRemainder.concat(Array(1));
-    } else {
-      throw new Error("Don't be silly");
-    }
+export function divide(dividend: number, divisor: number, precision: number = 2): number {
+  const { whole, remainder } = integerDivision(dividend, divisor);
+  console.log({ whole, remainder });
+  if (remainder) {
+    const fraction = getFraction(remainder, divisor, precision);
+    // todo use addition once it's fixed
+    return Number(whole.toString().concat(".").concat((fraction * 10).toString())); // todo
+  } else {
+    return whole;
   }
-  // Todo calculate remainder
-  return notRemainder.length;
+}
+
+export function integerDivision(n1: number, n2: number): { whole: number, remainder: number } {
+  console.log(`dividing ${n1} / ${n2}`);
+  let wholeDivisions = 0;
+  let removedItems = 0;
+  let remainder = 0;
+  const divisorIsNotZero = multiply(Array(n2).length, 1); // todo check if negative - checkIfZero?
+
+  if (divisorIsNotZero) {
+    let dividend = Array(n1);
+    while (dividend.length) {
+      removedItems = dividend.splice(0, n2).length;
+      const haveRemainder = subtract(n2, removedItems);
+      if (haveRemainder) {
+        remainder = removedItems;
+      } else {
+        wholeDivisions = add(wholeDivisions, 1);
+      }
+      if (wholeDivisions) { } else {
+        removedItems = n2;
+      }
+    }
+  } else {
+    throw new Error("Don't be silly");
+  }
+
+  return {
+    whole: wholeDivisions,
+    remainder,
+  }
+}
+
+function getFraction(remainder: number, divisor: number, precision: number): number {
+  const multiplier = 10; // todo
+
+  const dividend = remainder * multiplier; // todo
+  const res1 = integerDivision(dividend, divisor);
+  let fraction = res1.whole.toString(); // todo divide by multiplier?
+  if (res1.remainder) {
+    const dividend2 = res1.remainder * multiplier; // todo
+    const res2 = integerDivision(dividend2, divisor);
+    fraction = fraction.concat(res2.whole.toString())
+  }
+
+  return Number(fraction) / multiplier; // todo
 }
 
 function isNegative(n: number): boolean {
