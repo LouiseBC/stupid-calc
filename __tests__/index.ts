@@ -42,14 +42,28 @@ describe("Stupid calculator", () => {
   });
 
   describe("multiplication", () => {
-
+    test("0 * 0", () => {
+      expect(multiply(0, 0)).toBe(0);
+    });
+    test("2 * 5", () => {
+      expect(multiply(2, 5)).toBe(10);
+    });
+    test("2 * -5", () => {
+      expect(multiply(2, -5)).toBe(-10);
+    });
+    test("-2 * 5", () => {
+      expect(multiply(-2, 5)).toBe(-10);
+    });
+    test("-2 * -5", () => {
+      expect(multiply(-2, -5)).toBe(10);
+    });
   });
 
   describe("division", () => {
-    test('10 / 0', () => {
+    test("10 / 0", () => {
       expect(divide(10, 0)).toThrowError();
     });
-    test('0 / 10', () => {
+    test("0 / 10", () => {
       expect(divide(0, 10)).toBe(0);
     });
   });
