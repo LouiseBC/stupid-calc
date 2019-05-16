@@ -1,0 +1,10 @@
+{
+  "name": "stupid-calc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Louise Bicker Caarten <louisehmbc@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.4.5"
+  }
+}
