@@ -20,6 +20,7 @@ describe("Stupid calculator", () => {
     });
   });
 
+  describe("subtraction", () => {
     test("0 - 0", () => {
       expect(subtract(0, 0)).toBe(0);
     })
