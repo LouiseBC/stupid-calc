@@ -33,7 +33,7 @@ export function subtract(n1: number, n2: number): number {
       return Number("-".concat(add(Math.abs(n1), n2).toString()));
     }
   } else if (isNegative(n2)) {
-      return add(n1, Math.abs(n2));
+    return add(n1, Math.abs(n2));
   } else {
     const positive = Array(n1);
     const negative = [];
@@ -58,11 +58,21 @@ export function subtract(n1: number, n2: number): number {
 
 export function multiply(n1: number, n2: number) {
   let product: string[] = [];
-  const _var1 = Array(n1).fill('-');
+  const _var1 = Array(Math.abs(n1)).fill('-');
   _var1.forEach(_ => {
-    product = product.concat(Array(n2));
-  })
-  return product.length
+    product = product.concat(Array(Math.abs(n2)));
+  });
+  if (isNegative(n1)) {
+    if (isNegative(n2)) {
+      return product.length
+    } else {
+      return Number("-".concat(product.length.toString()));
+    }
+  } else if (isNegative(n2)) {
+    return Number("-".concat(product.length.toString()));
+  } else {
+    return product.length
+  }
 }
 
 export function divide(n1: number, n2: number) {
