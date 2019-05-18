@@ -60,35 +60,45 @@ describe("Stupid calculator", () => {
   // });
 
   describe.only("division", () => {
-    test("10 / 0", () => {
-      expect(divide(10, 0)).toThrowError();
+    describe("dividend > divisor", () => {
+      xtest("10 / 0", () => {
+        // todo
+        expect(divide(10, 0)).toThrowError();
+      });
+      test("10 / 2", () => {
+        expect(divide(10, 2)).toBe(5);
+      });
+      test("10 / 4", () => {
+        expect(divide(10, 4)).toBe(2.5);
+      });
+      test("9 / 4", () => {
+        expect(divide(9, 4)).toBe(2.25);
+      });
+      xtest("10 / 3", () => {
+        // todo
+      });
+
     });
-    test("0 / 10", () => {
-      expect(divide(0, 10)).toBe(0);
+
+    describe("divisor > dividend", () => {
+      test("0 / 10", () => {
+        expect(divide(0, 10)).toBe(0);
+      });
+      test("1 / 4", () => {
+        expect(divide(1, 4)).toBe(0.25);
+      });
+      test("3 / 6", () => {
+        expect(divide(3, 6)).toBe(0.5);
+      })
     });
-    test("10 / 2", () => {
-      expect(divide(10, 2)).toBe(5);
-    });
-    test("10 / -2", () => {
-      expect(divide(10, -2)).toBe(-5);
-    });
-    test("-10 / 2", () => {
-      expect(divide(-10, 2)).toBe(-5)
-    });
-    test("1 / 4", () => {
-      expect(divide(1, 4)).toBe(0.25);
-    });
-    test("10 / 4", () => {
-      expect(divide(10, 4)).toBe(2.5);
-    });
-    test("9 / 4", () => {
-      expect(divide(9, 4)).toBe(2.25);
-    });
-    test("3 / 6", () => {
-      expect(divide(3, 6)).toBe(0.5);
+
+    xdescribe("negatives", () => {
+      test("10 / -2", () => {
+        expect(divide(10, -2)).toBe(-5);
+      });
+      test("-10 / 2", () => {
+        expect(divide(-10, 2)).toBe(-5)
+      });
     })
-    test("10 / 3", () => {
-      // todo
-    });
   });
 });
