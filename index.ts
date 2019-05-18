@@ -77,23 +77,31 @@ export function multiply(n1: number, n2: number) {
 }
 
 export function divide(dividend: number, divisor: number, precision: number = 2): number {
-  const { whole, remainder } = integerDivision(dividend, divisor);
-  console.log({ whole, remainder });
+  let { whole, remainder } = integerDivision(Math.abs(dividend), Math.abs(divisor));
+  let prefix = '';
+  if (isNegative(dividend)) {
+    prefix = '-';
+  }
+  if (isNegative(divisor)) {
+    prefix = '-';
+  }
+
+  let result: number;
   if (remainder) {
     if (precision) {
       const fraction = getFraction(remainder, divisor, precision);
       // todo use addition once it's fixed
-      return Number(whole.toString().concat(".").concat(fraction.toString()));
+      result = Number(whole.toString().concat(".").concat(fraction.toString()));
     } else {
-      return whole;
+      result = whole;
     }
   } else {
-    return whole;
+    result = whole;
   }
+  return Number(prefix.concat(result.toString()));
 }
 
 export function integerDivision(n1: number, n2: number): { whole: number, remainder: number } {
-  console.log(`dividing ${n1} / ${n2}`);
   let wholeDivisions = 0;
   let removedItems = 0;
   let remainder = 0;

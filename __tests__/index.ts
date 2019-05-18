@@ -61,9 +61,14 @@ describe("Stupid calculator", () => {
 
   describe.only("division", () => {
     describe("dividend > divisor", () => {
-      xtest("10 / 0", () => {
-        // todo
-        expect(divide(10, 0)).toThrowError();
+      test("10 / 0", () => {
+        // todo actually fix this
+        try {
+          expect(divide(10, 0)).toThrow();
+          throw new Error();
+        } catch (err) {
+          expect(err.message).toBe("Don't be silly");
+        }
       });
       test("10 / 2", () => {
         expect(divide(10, 2)).toBe(5);
@@ -74,8 +79,9 @@ describe("Stupid calculator", () => {
       test("9 / 4", () => {
         expect(divide(9, 4)).toBe(2.25);
       });
-      xtest("10 / 3", () => {
-        // todo
+      test("10 / 3", () => {
+        expect(divide(10, 3, 2)).toBe(3.33);
+        expect(divide(10, 3, 4)).toBe(3.3333);
       });
     });
 
@@ -91,7 +97,7 @@ describe("Stupid calculator", () => {
       })
     });
 
-    xdescribe("negatives", () => {
+    describe("negatives", () => {
       test("10 / -2", () => {
         expect(divide(10, -2)).toBe(-5);
       });
