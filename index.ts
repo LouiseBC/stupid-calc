@@ -83,7 +83,7 @@ export function divide(dividend: number, divisor: number, precision: number = 2)
     if (precision) {
       const fraction = getFraction(remainder, divisor, precision);
       // todo use addition once it's fixed
-      return Number(whole.toString().concat(".").concat((fraction * 10).toString())); // todo
+      return Number(whole.toString().concat(".").concat(fraction.toString()));
     } else {
       return whole;
     }
@@ -124,12 +124,6 @@ export function integerDivision(n1: number, n2: number): { whole: number, remain
 }
 
 function getFraction(remainder: number, divisor: number, precision: number): number {
-  if (precision) {
-    if (isNegative(precision)) {
-      throw new Error("Precision must be >= 1")
-    }
-  } else { throw new Error("Precision must be set") }
-
   const multiplier = 10;
   let iterations = precision;
   let fraction = '';
@@ -137,11 +131,11 @@ function getFraction(remainder: number, divisor: number, precision: number): num
   while (iterations) {
     const dividend = multiply(rem, multiplier);
     const res = integerDivision(dividend, divisor);
-    fraction = fraction.concat(res.whole.toString()); // todo divide by multiplier?
+    fraction = fraction.concat(res.whole.toString());
     iterations = subtract(iterations, 1);
     rem = res.remainder;
   }
-  return Number(fraction) / multiplier; // todo
+  return Number(fraction);
 }
 
 function isNegative(n: number): boolean {
