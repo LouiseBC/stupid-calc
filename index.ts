@@ -80,9 +80,13 @@ export function divide(dividend: number, divisor: number, precision: number = 2)
   const { whole, remainder } = integerDivision(dividend, divisor);
   console.log({ whole, remainder });
   if (remainder) {
-    const fraction = getFraction(remainder, divisor, precision);
-    // todo use addition once it's fixed
-    return Number(whole.toString().concat(".").concat((fraction * 10).toString())); // todo
+    if (precision) {
+      const fraction = getFraction(remainder, divisor, precision);
+      // todo use addition once it's fixed
+      return Number(whole.toString().concat(".").concat((fraction * 10).toString())); // todo
+    } else {
+      return whole;
+    }
   } else {
     return whole;
   }
@@ -120,17 +124,23 @@ export function integerDivision(n1: number, n2: number): { whole: number, remain
 }
 
 function getFraction(remainder: number, divisor: number, precision: number): number {
-  const multiplier = 10; // todo
+  if (precision) {
+    if (isNegative(precision)) {
+      throw new Error("Precision must be >= 1")
+    }
+  } else { throw new Error("Precision must be set") }
 
-  const dividend = remainder * multiplier; // todo
-  const res1 = integerDivision(dividend, divisor);
-  let fraction = res1.whole.toString(); // todo divide by multiplier?
-  if (res1.remainder) {
-    const dividend2 = res1.remainder * multiplier; // todo
-    const res2 = integerDivision(dividend2, divisor);
-    fraction = fraction.concat(res2.whole.toString())
+  const multiplier = 10;
+  let iterations = precision;
+  let fraction = '';
+  let rem = remainder;
+  while (iterations) {
+    const dividend = multiply(rem, multiplier);
+    const res = integerDivision(dividend, divisor);
+    fraction = fraction.concat(res.whole.toString()); // todo divide by multiplier?
+    iterations = subtract(iterations, 1);
+    rem = res.remainder;
   }
-
   return Number(fraction) / multiplier; // todo
 }
 

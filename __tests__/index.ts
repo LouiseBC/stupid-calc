@@ -77,7 +77,6 @@ describe("Stupid calculator", () => {
       xtest("10 / 3", () => {
         // todo
       });
-
     });
 
     describe("divisor > dividend", () => {
