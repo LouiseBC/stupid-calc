@@ -45,7 +45,7 @@ export function subtract(n1: number, n2: number): number {
 function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero: any[]): number {
   if (toSubtract.length) {
     if (aboveZero.length) {
-      return subtractPositiveNumbers(aboveZero.slice(1), toSubtract.slice(1), belowZero); 
+      return subtractPositiveNumbers(aboveZero.slice(1), toSubtract.slice(1), belowZero);
     } else {
       return subtractPositiveNumbers(aboveZero, toSubtract.slice(1), belowZero.concat(Array(1)));
     }
@@ -60,21 +60,28 @@ function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero:
 
 
 export function multiply(n1: number, n2: number) {
-  let product: string[] = [];
-  const multiplicand = Array(Math.abs(n1)).fill('-');
-  multiplicand.forEach(_ => {
-    product = product.concat(Array(Math.abs(n2)));
-  });
+  return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), getResultPrefix(n1, n2), []);
+}
+
+function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[]): number {
+  if (n2.length) {
+    return _multiply(n1, n2.slice(1), resultPrefix, result.concat(Array(n1.length)));
+  } else {
+    return Number(resultPrefix.concat(result.length.toString()));
+  }
+}
+
+function getResultPrefix(n1: number, n2: number): string {
   if (isNegative(n1)) {
     if (isNegative(n2)) {
-      return product.length
+      return "";
     } else {
-      return Number("-".concat(product.length.toString()));
+      return "-";
     }
   } else if (isNegative(n2)) {
-    return Number("-".concat(product.length.toString()));
+    return "-";
   } else {
-    return product.length
+    return "";
   }
 }
 
