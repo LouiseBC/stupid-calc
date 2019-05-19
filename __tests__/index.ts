@@ -2,7 +2,7 @@ import { add, subtract, multiply, divide } from "../index";
 
 describe("Stupid calculator", () => {
 
-  describe.only("addition", () => {
+  describe("addition", () => {
     describe("positive numbers", () => {
       test("0 + 0", () => {
         expect(add(0, 0)).toBe(0);
@@ -95,7 +95,7 @@ describe("Stupid calculator", () => {
     });
   });
 
-  describe("division", () => {
+  describe.only("division", () => {
     describe("dividend > divisor", () => {
       test("10 / 0", () => {
         // todo actually fix this

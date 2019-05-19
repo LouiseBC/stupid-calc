@@ -86,14 +86,12 @@ function getResultPrefix(n1: number, n2: number): string {
 }
 
 export function divide(dividend: number, divisor: number, precision: number = 2): number {
+  if (multiply(Array(Math.abs(divisor)).length, 1)) { } else { // todo check if negative - checkIfZero?
+    throw new Error("Don't be silly");
+  }
+
   let { whole, remainder } = integerDivision(Math.abs(dividend), Math.abs(divisor));
-  let prefix = '';
-  if (isNegative(dividend)) {
-    prefix = '-';
-  }
-  if (isNegative(divisor)) {
-    prefix = '-';
-  }
+  let prefix = getResultPrefix(dividend, divisor);
 
   let result: number;
   if (remainder) {
@@ -110,49 +108,39 @@ export function divide(dividend: number, divisor: number, precision: number = 2)
   return Number(prefix.concat(result.toString()));
 }
 
-export function integerDivision(n1: number, n2: number): { whole: number, remainder: number } {
-  let wholeDivisions = 0;
-  let removedItems = 0;
-  let remainder = 0;
-  const divisorIsNotZero = multiply(Array(n2).length, 1); // todo check if negative - checkIfZero?
-
-  if (divisorIsNotZero) {
-    let dividend = Array(n1);
-    while (dividend.length) {
-      removedItems = dividend.splice(0, n2).length;
-      const haveRemainder = subtract(n2, removedItems);
-      if (haveRemainder) {
-        remainder = removedItems;
-      } else {
-        wholeDivisions = add(wholeDivisions, 1);
-      }
-      if (wholeDivisions) { } else {
-        removedItems = n2;
-      }
+export function _divide(dividend: any[], divisor: number, precision: any[], prefix: string, wholeDivs: any[], remainder: any[] = []): number {
+  if (dividend.length) {
+    if (subtract(dividend.slice(-divisor).length, divisor)) { // have remainder
+      return _divide(dividend.slice(divisor), divisor, precision, prefix, wholeDivs, dividend.slice(-divisor))
+    } else { // no remainder
+      return _divide(dividend.slice(divisor), divisor, precision, prefix, wholeDivs.concat(Array(1)), remainder)
     }
   } else {
-    throw new Error("Don't be silly");
-  }
-
-  return {
-    whole: wholeDivisions,
-    remainder,
+    // return getFraction(remainder.length, divisor, precision.length);
   }
 }
 
 function getFraction(remainder: number, divisor: number, precision: number): number {
-  const multiplier = 10;
+  if (subtract(multiply(precision, precision), multiply(precision, precision))) {
+    throw new Error("Precision must be larger than 0");
+  }
+  return _getFraction(multiply(remainder, 10), divisor, precision);
+}
+
+function _getFraction(dividend: number, divisor: number, precision: number): number {
+  if (precision) {
+    return _getFraction(multiply(remainder, 10), divisor, subtract(precision, 1));
+  }
   let iterations = precision;
   let fraction = '';
-  let rem = remainder;
   while (iterations) {
-    const dividend = multiply(rem, multiplier);
     const res = integerDivision(dividend, divisor);
     fraction = fraction.concat(res.whole.toString());
     iterations = subtract(iterations, 1);
     rem = res.remainder;
   }
   return Number(fraction);
+
 }
 
 function isNegative(n: number): boolean {
