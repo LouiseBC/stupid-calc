@@ -1,4 +1,4 @@
-import { add, subtract, multiply, divide } from "../index";
+import { add, subtract, multiply, divide } from "../src/index";
 
 describe("Stupid calculator", () => {
 
