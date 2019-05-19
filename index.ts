@@ -60,10 +60,10 @@ function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero:
 
 
 export function multiply(n1: number, n2: number) {
-  return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), getResultPrefix(n1, n2), []);
+  return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), getResultPrefix(n1, n2));
 }
 
-function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[]): number {
+function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[] = []): number {
   if (n2.length) {
     return _multiply(n1, n2.slice(1), resultPrefix, result.concat(Array(n1.length)));
   } else {
@@ -86,61 +86,32 @@ function getResultPrefix(n1: number, n2: number): string {
 }
 
 export function divide(dividend: number, divisor: number, precision: number = 2): number {
-  if (multiply(Array(Math.abs(divisor)).length, 1)) { } else { // todo check if negative - checkIfZero?
+  if (multiply(Array(Math.abs(divisor)).length, 1)) { } else {
     throw new Error("Don't be silly");
   }
-
-  let { whole, remainder } = integerDivision(Math.abs(dividend), Math.abs(divisor));
-  let prefix = getResultPrefix(dividend, divisor);
-
-  let result: number;
-  if (remainder) {
-    if (precision) {
-      const fraction = getFraction(remainder, divisor, precision);
-      // todo use addition once it's fixed
-      result = Number(whole.toString().concat(".").concat(fraction.toString()));
-    } else {
-      result = whole;
-    }
-  } else {
-    result = whole;
-  }
-  return Number(prefix.concat(result.toString()));
+  return _divide(Array(Math.abs(dividend)), Math.abs(divisor), [], [], precision, getResultPrefix(dividend, divisor));
 }
 
-export function _divide(dividend: any[], divisor: number, precision: any[], prefix: string, wholeDivs: any[], remainder: any[] = []): number {
+function _divide(dividend: any[], divisor: number, wholeDivs: any[], remainder: any[], precision: number, prefix: string): number {
   if (dividend.length) {
-    if (subtract(dividend.slice(-divisor).length, divisor)) { // have remainder
-      return _divide(dividend.slice(divisor), divisor, precision, prefix, wholeDivs, dividend.slice(-divisor))
-    } else { // no remainder
-      return _divide(dividend.slice(divisor), divisor, precision, prefix, wholeDivs.concat(Array(1)), remainder)
+    if (subtract(dividend.slice(-divisor).length, divisor)) {
+      return _divide(dividend.slice(divisor), divisor, wholeDivs, dividend.slice(-divisor), precision, prefix)
+    } else {
+      return _divide(dividend.slice(divisor), divisor, wholeDivs.concat(Array(1)), remainder, precision, prefix)
     }
   } else {
-    // return getFraction(remainder.length, divisor, precision.length);
+    if (precision) {
+      if (remainder.length) {
+        return Number(prefix.concat(wholeDivs.length.toString()).concat(".")
+          .concat(divide(multiply(remainder.length, Math.pow(10, precision)), divisor, 0).toString()));
+      } else {
+        return Number(prefix.concat(wholeDivs.length.toString()));
+      }
+    }
+    else {
+      return Number(prefix.concat(wholeDivs.length.toString()));
+    }
   }
-}
-
-function getFraction(remainder: number, divisor: number, precision: number): number {
-  if (subtract(multiply(precision, precision), multiply(precision, precision))) {
-    throw new Error("Precision must be larger than 0");
-  }
-  return _getFraction(multiply(remainder, 10), divisor, precision);
-}
-
-function _getFraction(dividend: number, divisor: number, precision: number): number {
-  if (precision) {
-    return _getFraction(multiply(remainder, 10), divisor, subtract(precision, 1));
-  }
-  let iterations = precision;
-  let fraction = '';
-  while (iterations) {
-    const res = integerDivision(dividend, divisor);
-    fraction = fraction.concat(res.whole.toString());
-    iterations = subtract(iterations, 1);
-    rem = res.remainder;
-  }
-  return Number(fraction);
-
 }
 
 function isNegative(n: number): boolean {

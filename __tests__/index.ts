@@ -95,7 +95,7 @@ describe("Stupid calculator", () => {
     });
   });
 
-  describe.only("division", () => {
+  describe("division", () => {
     describe("dividend > divisor", () => {
       test("10 / 0", () => {
         // todo actually fix this
@@ -129,7 +129,10 @@ describe("Stupid calculator", () => {
       });
       test("3 / 6", () => {
         expect(divide(3, 6)).toBe(0.5);
-      })
+      });
+      test("1 / 8", () => {
+        expect(divide(1, 8, 3)).toBe(0.125)
+      });
     });
     describe("negatives", () => {
       test("10 / -2", () => {
@@ -137,6 +140,12 @@ describe("Stupid calculator", () => {
       });
       test("-10 / 2", () => {
         expect(divide(-10, 2)).toBe(-5)
+      });
+      test("-7 / -2", () => {
+        expect(divide(-7, -2)).toBe(3.5)
+      });
+      test("-10 / 3", () => {
+        expect(divide(-10, 3, 0)).toBe(-3);
       });
     });
     xdescribe("fractions", () => {
