@@ -4,25 +4,27 @@ export function add(n1: number, n2: number): number {
     if (isNegative(n2)) {
       return Number("-".concat(add(Math.abs(n1), Math.abs(n2)).toString()));
     } else {
-      const negative = Array(Math.abs(n1));
-      const positive = [];
-      Array(n2).fill("-").forEach(() => {
-        if (negative.length) {
-          negative.pop();
-        } else {
-          positive.push("-");
-        }
-      });
-      if (negative.length) {
-        return Number("-".concat(negative.length.toString()));
-      } else {
-        return positive.length;
-      }
+      return addPosToNeg(Array(Math.abs(n1)), Array(n2), []);
     }
   } else if (isNegative(n2)) {
     return subtract(n1, Math.abs(n2));
   } else {
     return Array(n1).concat(Array(n2)).length;
+  }
+}
+
+function addPosToNeg(negNums: any[], posNums: any[], result: any[]): number {
+  if (posNums.length) {
+    if (negNums.length) {
+      return addPosToNeg(negNums.slice(1), posNums.slice(1), result)
+    } else {
+      return addPosToNeg(negNums.slice(1), posNums.slice(1), result.concat(Array(1)));
+    }
+  } else {
+    if (negNums.length) {
+      return Number("-".concat(negNums.length.toString()));
+    }
+    return result.length;
   }
 }
 

@@ -2,7 +2,7 @@ import { add, subtract, multiply, divide } from "../index";
 
 describe("Stupid calculator", () => {
 
-  describe("addition", () => {
+  describe.only("addition", () => {
     describe("positive numbers", () => {
       test("0 + 0", () => {
         expect(add(0, 0)).toBe(0);
