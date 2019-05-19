@@ -38,26 +38,26 @@ export function subtract(n1: number, n2: number): number {
   } else if (isNegative(n2)) {
     return add(n1, Math.abs(n2));
   } else {
-    const positive = Array(n1);
-    const negative = [];
-    Array(n2).fill('+').forEach(() => {
-      if (positive.length) {
-        positive.pop();
-      } else {
-        negative.push('+');
-      }
-    });
-    if (positive.length) {
-      return positive.length;
+    return subtractPositiveNumbers(Array(n1), Array(n2), []);
+  }
+}
+
+function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero: any[]): number {
+  if (toSubtract.length) {
+    if (aboveZero.length) {
+      return subtractPositiveNumbers(aboveZero.slice(1), toSubtract.slice(1), belowZero); 
     } else {
-      if (negative.length) {
-        return Number("-".concat(negative.length.toString()));
-      } else {
-        return negative.length;
-      }
+      return subtractPositiveNumbers(aboveZero, toSubtract.slice(1), belowZero.concat(Array(1)));
+    }
+  } else {
+    if (belowZero.length) {
+      return Number("-".concat(belowZero.length.toString()));
+    } else {
+      return aboveZero.length;
     }
   }
 }
+
 
 export function multiply(n1: number, n2: number) {
   let product: string[] = [];
