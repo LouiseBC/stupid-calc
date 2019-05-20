@@ -58,7 +58,6 @@ function _subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero
   }
 }
 
-
 export function multiply(n1: number, n2: number) {
   return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), _getResultPrefix(n1, n2));
 }
@@ -68,20 +67,6 @@ function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[] = [
     return _multiply(n1, n2.slice(1), resultPrefix, result.concat(Array(n1.length)));
   } else {
     return Number(resultPrefix.concat(result.length.toString()));
-  }
-}
-
-function _getResultPrefix(n1: number, n2: number): string {
-  if (_isNegative(n1)) {
-    if (_isNegative(n2)) {
-      return "";
-    } else {
-      return "-";
-    }
-  } else if (_isNegative(n2)) {
-    return "-";
-  } else {
-    return "";
   }
 }
 
@@ -116,4 +101,18 @@ function _divide(dividend: any[], divisor: number, wholeDivs: any[], remainder: 
 
 function _isNegative(n: number): boolean {
   return n.toString().startsWith('-');
+}
+
+function _getResultPrefix(n1: number, n2: number): string {
+  if (_isNegative(n1)) {
+    if (_isNegative(n2)) {
+      return "";
+    } else {
+      return "-";
+    }
+  } else if (_isNegative(n2)) {
+    return "-";
+  } else {
+    return "";
+  }
 }
