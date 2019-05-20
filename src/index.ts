@@ -1,24 +1,24 @@
 // todo fix fraction
 export function add(n1: number, n2: number): number {
-  if (isNegative(n1)) {
-    if (isNegative(n2)) {
+  if (_isNegative(n1)) {
+    if (_isNegative(n2)) {
       return Number("-".concat(add(Math.abs(n1), Math.abs(n2)).toString()));
     } else {
-      return addPosToNeg(Array(Math.abs(n1)), Array(n2), []);
+      return _addPosToNeg(Array(Math.abs(n1)), Array(n2), []);
     }
-  } else if (isNegative(n2)) {
+  } else if (_isNegative(n2)) {
     return subtract(n1, Math.abs(n2));
   } else {
     return Array(n1).concat(Array(n2)).length;
   }
 }
 
-function addPosToNeg(negNums: any[], posNums: any[], result: any[]): number {
+function _addPosToNeg(negNums: any[], posNums: any[], result: any[]): number {
   if (posNums.length) {
     if (negNums.length) {
-      return addPosToNeg(negNums.slice(1), posNums.slice(1), result)
+      return _addPosToNeg(negNums.slice(1), posNums.slice(1), result)
     } else {
-      return addPosToNeg(negNums.slice(1), posNums.slice(1), result.concat(Array(1)));
+      return _addPosToNeg(negNums.slice(1), posNums.slice(1), result.concat(Array(1)));
     }
   } else {
     if (negNums.length) {
@@ -29,25 +29,25 @@ function addPosToNeg(negNums: any[], posNums: any[], result: any[]): number {
 }
 
 export function subtract(n1: number, n2: number): number {
-  if (isNegative(n1)) {
-    if (isNegative(n2)) {
+  if (_isNegative(n1)) {
+    if (_isNegative(n2)) {
       return add(n1, Math.abs(n2));
     } else {
       return Number("-".concat(add(Math.abs(n1), n2).toString()));
     }
-  } else if (isNegative(n2)) {
+  } else if (_isNegative(n2)) {
     return add(n1, Math.abs(n2));
   } else {
-    return subtractPositiveNumbers(Array(n1), Array(n2), []);
+    return _subtractPositiveNumbers(Array(n1), Array(n2), []);
   }
 }
 
-function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero: any[]): number {
+function _subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero: any[]): number {
   if (toSubtract.length) {
     if (aboveZero.length) {
-      return subtractPositiveNumbers(aboveZero.slice(1), toSubtract.slice(1), belowZero);
+      return _subtractPositiveNumbers(aboveZero.slice(1), toSubtract.slice(1), belowZero);
     } else {
-      return subtractPositiveNumbers(aboveZero, toSubtract.slice(1), belowZero.concat(Array(1)));
+      return _subtractPositiveNumbers(aboveZero, toSubtract.slice(1), belowZero.concat(Array(1)));
     }
   } else {
     if (belowZero.length) {
@@ -60,7 +60,7 @@ function subtractPositiveNumbers(aboveZero: any[], toSubtract: any[], belowZero:
 
 
 export function multiply(n1: number, n2: number) {
-  return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), getResultPrefix(n1, n2));
+  return _multiply(Array(Math.abs(n1)), Array(Math.abs(n2)), _getResultPrefix(n1, n2));
 }
 
 function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[] = []): number {
@@ -71,14 +71,14 @@ function _multiply(n1: any[], n2: any[], resultPrefix: string, result: any[] = [
   }
 }
 
-function getResultPrefix(n1: number, n2: number): string {
-  if (isNegative(n1)) {
-    if (isNegative(n2)) {
+function _getResultPrefix(n1: number, n2: number): string {
+  if (_isNegative(n1)) {
+    if (_isNegative(n2)) {
       return "";
     } else {
       return "-";
     }
-  } else if (isNegative(n2)) {
+  } else if (_isNegative(n2)) {
     return "-";
   } else {
     return "";
@@ -89,7 +89,7 @@ export function divide(dividend: number, divisor: number, precision: number = 2)
   if (multiply(Array(Math.abs(divisor)).length, 1)) { } else {
     throw new Error("Don't be silly");
   }
-  return _divide(Array(Math.abs(dividend)), Math.abs(divisor), [], [], precision, getResultPrefix(dividend, divisor));
+  return _divide(Array(Math.abs(dividend)), Math.abs(divisor), [], [], precision, _getResultPrefix(dividend, divisor));
 }
 
 function _divide(dividend: any[], divisor: number, wholeDivs: any[], remainder: any[], precision: number, prefix: string): number {
@@ -114,6 +114,6 @@ function _divide(dividend: any[], divisor: number, wholeDivs: any[], remainder: 
   }
 }
 
-function isNegative(n: number): boolean {
+function _isNegative(n: number): boolean {
   return n.toString().startsWith('-');
 }
